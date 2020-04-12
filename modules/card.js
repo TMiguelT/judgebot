@@ -240,8 +240,9 @@ class MtgCardLoader {
 
             // instantiate embed object
             const embed = new Discord.MessageEmbed({
-                title,
-                description,
+                fields: [
+                    {name: title, value: description}
+                ],
                 footer: {text: footer},
                 url: card.scryfall_uri,
                 color: this.getBorderColor(card.layout === 'transform' ? card.card_faces[0]:card),
@@ -367,7 +368,7 @@ class MtgCardLoader {
 
                     sentMessage.createReactionCollector(
                         ({emoji} , user) => ['⬅','➡','🔍'].indexOf(emoji.toString()) > -1 && user.id === msg.author.id,
-                        {time: 5 * 60 *  1000}
+                        {time: 2 * 5 * 60 *  1000}
                     ).on('collect', handleReaction).on('remove', handleReaction);
                 }, err => log.error(err)).catch(() => {});
             }

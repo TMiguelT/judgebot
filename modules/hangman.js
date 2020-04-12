@@ -64,12 +64,10 @@ class MtgHangman {
             'reactions to pick letters.';
 
         // instantiate embed object
-        const embed = new Discord.MessageEmbed({
-            author: {name: "Guess the card:"},
-            title,
-            description,
-            footer: {text: "You have "+this.gameTime/60000+" minutes to guess the card."}
-        });
+        const embed = new Discord.MessageEmbed()
+            .setTitle(title)
+            .addFields({name: 'Guess the card:', value: description})
+            .setFooter('You have ' + this.gameTime / 60000 + ' minutes to guess the card.');
 
         // game is over
         if (done || !missing.length || wrong > 6) {
@@ -113,7 +111,7 @@ class MtgHangman {
                     sentMessage.react('❓');
                     const collector = sentMessage.createReactionCollector(
                         ({emoji}) => emoji.name.charCodeAt(0) === 55356 && emoji.name.charCodeAt(1) >= 56806 && emoji.name.charCodeAt(1) <= 56831,
-                        {time: this.gameTime}
+                        {time: 2 * this.gameTime}
                     ).on('collect', (reaction) => {
                         // get emoji character (we only accept :regional_indicator_X: emojis)
                         const char = String.fromCharCode(reaction.emoji.name.charCodeAt(1) - 56709);
