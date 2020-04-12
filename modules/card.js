@@ -367,7 +367,7 @@ class MtgCardLoader {
 
                     sentMessage.createReactionCollector(
                         ({emoji} , user) => ['⬅','➡','🔍'].indexOf(emoji.toString()) > -1 && user.id === msg.author.id,
-                        {time: 60000, max: 20}
+                        {time: 5 * 60 *  1000}
                     ).on('collect', handleReaction).on('remove', handleReaction);
                 }, err => log.error(err)).catch(() => {});
             }
