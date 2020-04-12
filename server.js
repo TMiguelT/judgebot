@@ -24,8 +24,8 @@ const modules = [
 const bot = new Discord.Client({
     shardList: 'auto' ,
     shards: 'auto' ,
-    messageCacheMaxSize: 1,
-    messageCacheLifetime: 60,
+    messageCacheMaxSize: 100,
+    messageCacheLifetime: 10 * 60 ,// 10 minutes
     messageSweepInterval: 90,
     disabledEvents: [
         'GUILD_UPDATE',

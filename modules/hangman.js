@@ -111,7 +111,7 @@ class MtgHangman {
                     sentMessage.react('❓');
                     const collector = sentMessage.createReactionCollector(
                         ({emoji}) => emoji.name.charCodeAt(0) === 55356 && emoji.name.charCodeAt(1) >= 56806 && emoji.name.charCodeAt(1) <= 56831,
-                        {time: 2 * this.gameTime}
+                        {time: this.gameTime}
                     ).on('collect', (reaction) => {
                         // get emoji character (we only accept :regional_indicator_X: emojis)
                         const char = String.fromCharCode(reaction.emoji.name.charCodeAt(1) - 56709);
