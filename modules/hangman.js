@@ -89,10 +89,13 @@ class MtgHangman {
         const [first, ...rest] = parameter.toLowerCase().split(" ");
         console.log(`first: ${first}`);
         console.log(`rest: ${rest}`);
+        console.log(`running games: ${this.runningGames}`);
 
         // check for already running games
         const id = msg.guild ? msg.guild.id : msg.author.id;
+        console.log(`id: ${id}`);
         if (id in this.runningGames) {
+            console.log(`Game already started`);
             const game = this.runningGames[id];
             // The user can !hangman guess Some Card Name
             if (first === 'guess'){
@@ -124,6 +127,7 @@ class MtgHangman {
                 return;
             }
         }
+        console.log(`Game not already started`);
 
         // Add an empty dict to the running games dictionary so we don't make duplicates
         this.runningGames[id] = {};
