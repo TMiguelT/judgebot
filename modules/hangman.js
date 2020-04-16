@@ -35,10 +35,17 @@ class MtgHangman {
     }
 
     // generate the embed card
-    generateEmbed(card, difficulty, letters = [], done = false) {
+    generateEmbed(card, difficulty, letters = [], done = false, forceCorrect = false) {
         // count number of wrong letters and missing letters
         const wrong = letters.filter(c => card.name.toLowerCase().indexOf(c) === -1).length;
-        const missing = _.difference(_.uniq(card.name.replace(/[^a-z]/ig,'').toLowerCase().split("")), letters);
+        let missing;
+        
+        // Allow guessing to force the correct answer
+        if (forceCorrect){
+            missing = 0;
+        } else {
+            missing = _.difference(_.uniq(card.name.replace(/[^a-z]/ig, '').toLowerCase().split("")), letters);
+        }
         console.log(`wrong: ${wrong}`);
         console.log(`missing: ${missing}`);
 
@@ -110,7 +117,8 @@ class MtgHangman {
                     const embed = this.generateEmbed(
                         game.body,
                         game.difficulty,
-                        game.body.name.replace(/[^a-z]/ig,'').toLowerCase().split(""),
+                        game.letters,
+                        true,
                         true
                     );
                     game.message.edit('', {embed});
@@ -175,7 +183,8 @@ class MtgHangman {
                         message: sentMessage,
                         collector: collector,
                         body: body,
-                        difficulty: difficulty
+                        difficulty: difficulty,
+                        letters: letters
                     };
                 }).catch(() => {});
             }
