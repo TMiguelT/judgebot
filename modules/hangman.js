@@ -87,12 +87,12 @@ class MtgHangman {
 
     handleMessage(command, parameter, msg) {
         const [first, ...rest] = parameter.toLowerCase().split(" ");
-        
+        console.log(`first: ${first}`);
+        console.log(`rest: ${rest}`);
+
         // check for already running games
         const id = msg.guild ? msg.guild.id : msg.author.id;
         if (id in this.runningGames) {
-            console.log(`first: ${first}`);
-            console.log(`rest: ${rest}`);
             const game = this.runningGames[id];
             // The user can !hangman guess Some Card Name
             if (first === 'guess'){
