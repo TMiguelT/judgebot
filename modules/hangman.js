@@ -123,8 +123,8 @@ class MtgHangman {
                         color: 0xff0000
                     })
                 });
-                return;
             }
+            return;
         }
         console.log(`Game not already started`);
 
