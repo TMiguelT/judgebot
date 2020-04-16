@@ -89,7 +89,6 @@ class MtgHangman {
         const [first, ...rest] = parameter.toLowerCase().split(" ");
         console.log(`first: ${first}`);
         console.log(`rest: ${rest}`);
-        console.log(`running games: ${JSON.stringify(this.runningGames)}`);
 
         // check for already running games
         const id = msg.guild ? msg.guild.id : msg.author.id;
@@ -109,11 +108,11 @@ class MtgHangman {
                     const embed = this.generateEmbed(game.body, game.difficulty, game.body.name.split(''));
                     game.message.edit('', {embed});
                     game.collector.stop('finished');
-                    msg.react('☑️️');
+                    msg.react('✅');
                 }
                 else {
                     console.log('This was incorrect');
-                    msg.react('❎️');
+                    msg.react('❎');
                 }
             }
             else {
