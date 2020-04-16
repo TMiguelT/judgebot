@@ -39,6 +39,8 @@ class MtgHangman {
         // count number of wrong letters and missing letters
         const wrong = letters.filter(c => card.name.toLowerCase().indexOf(c) === -1).length;
         const missing = _.difference(_.uniq(card.name.replace(/[^a-z]/ig,'').toLowerCase().split("")), letters);
+        console.log(`wong: ${wrong}`);
+        console.log(`missing: ${missing}`);
 
         // generate embed title
         const title = card.name.replace(/[a-z]/ig, c => letters.indexOf(c.toLowerCase()) < 0 ? '⬚':c);
@@ -105,7 +107,7 @@ class MtgHangman {
                 if (guess.includes(correct)){
                     console.log('This was correct');
                     // If they're correct, pretend we guessed all the letters individually
-                    const embed = this.generateEmbed(game.body, game.difficulty, game.body.name.split(''));
+                    const embed = this.generateEmbed(game.body, game.difficulty, game.body.name.split(''), true);
                     game.message.edit('', {embed});
                     game.collector.stop('finished');
                     msg.react('✅');
