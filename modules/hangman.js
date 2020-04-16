@@ -109,11 +109,11 @@ class MtgHangman {
                     const embed = this.generateEmbed(game.body, game.difficulty, game.body.name.split(''));
                     game.message.edit('', {embed});
                     game.collector.stop('finished');
-                    msg.react('☑️️');
+                    msg.react('✅');
                 }
                 else {
                     console.log('This was incorrect');
-                    msg.react('❎️');
+                    msg.react('❎');
                 }
             }
             else {
