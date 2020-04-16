@@ -91,12 +91,17 @@ class MtgHangman {
         // check for already running games
         const id = msg.guild ? msg.guild.id : msg.author.id;
         if (id in this.runningGames) {
+            console.log(`first: ${first}`);
+            console.log(`rest: ${rest}`);
             const game = this.runningGames[id];
             // The user can !hangman guess Some Card Name
             if (first === 'guess'){
                 const correct = this.runningGames[id].toLowerCase();
                 const guess = rest.join(' ').toLowerCase();
+                console.log(`They guessed ${guess}`);
+                console.log(`Correct was ${correct}`);
                 if (guess.includes(correct)){
+                    console.log('This was correct');
                     // If they're correct, pretend we guessed all the letters individually
                     const embed = this.generateEmbed(game.body, game.difficulty, game.body.name.split(''));
                     game.message.edit('', {embed});
@@ -104,6 +109,7 @@ class MtgHangman {
                     msg.react('☑️️');
                 }
                 else {
+                    console.log('This was incorrect');
                     msg.react('❎️');
                 }
             }
