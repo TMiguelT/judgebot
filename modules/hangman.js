@@ -6,6 +6,8 @@ const log = utils.getLogger('hangman');
 const Card = require("./card");
 const cardFetcher = new Card();
 
+class HangmanGame {}
+
 class MtgHangman {
     constructor() {
         this.commands = {
@@ -47,17 +49,22 @@ class MtgHangman {
     // generate the embed card
     generateEmbed(card, difficulty, letters = [], done = false, forceCorrect = false, wrongGuesses = 0) {
         // count number of wrong letters and missing letters
-        const wrong = letters.filter(c => card.name.toLowerCase().indexOf(c) === -1).length;
         let missing;
+        let wrong;
+	let totalGuesses = letters.length + wrongGuesses;
 
         // Allow guessing to force the correct answer
         if (forceCorrect) {
             missing = 0;
+            wrong = 0;
         }
         else {
             // The total number of mistakes is the sum of the incorrect letters, and incorrect guesses
-            missing = _.difference(_.uniq(card.name.replace(/[^a-z]/ig, '').toLowerCase().split('')), letters) + wrongGuesses;
+            wrong = letters.filter(c => card.name.toLowerCase().indexOf(c) === -1).length + wrongGuesses;
+            missing = _.difference(_.uniq(card.name.replace(/[^a-z]/ig, '').toLowerCase().split('')), letters);
         }
+
+	const correctPercent = (1 - (wrong / (totalGuesses || 1))) * 100;
 
         // generate embed title
         const title = card.name.replace(/[a-z]/ig, c => letters.indexOf(c.toLowerCase()) < 0 ? '⬚':c);
@@ -75,7 +82,7 @@ class MtgHangman {
             '   ____     \n' +
             `  |    |    Missing: ${missing.length} letter(s)\n` +
             `  |    ${wrong > 0 ? 'o':' '}    Guessed: ${letters.join("").toUpperCase()}\n` +
-            `  |   ${wrong > 2 ? '/':' '}${wrong > 1 ? '|':' '}${wrong > 3 ? '\\':' '}   Correct: ${Math.round(100-(wrong/(letters.length || 1))*100)}%\n` +
+            `  |   ${wrong > 2 ? '/':' '}${wrong > 1 ? '|':' '}${wrong > 3 ? '\\':' '}   Correct: ${correctPercent}%\n` +
             `  |    ${wrong > 1 ? '|':' '}    \n` +
             `  |   ${wrong > 4 ? '/':' '} ${wrong > 5 ? '\\':' '}   \n` +
             ' _|________```\n' +
