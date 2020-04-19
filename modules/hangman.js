@@ -109,7 +109,7 @@ class MtgHangman {
             const game = this.runningGames[id];
             // The user can !hangman guess Some Card Name
             if (first === 'guess'){
-                const correct = this.runningGames[id].body.name.toLowerCase();
+                const correct = game.card.name.toLowerCase();
                 const guess = rest.join(' ').toLowerCase();
                 console.log(`They guessed ${guess}`);
                 console.log(`Correct was ${correct}`);
