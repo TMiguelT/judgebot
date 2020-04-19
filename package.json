@@ -23,7 +23,7 @@
     "@discordjs/collection": "^0.1.5",
     "chalk": "^2.4.2",
     "cheerio": "^1.0.0-rc.3",
-    "discord.js": "^12.1.1",
+    "discord.js": "^12.2.0",
     "fuse.js": "^3.6.1",
     "iconv-lite": "^0.4.24",
     "lodash": "^4.17.15",

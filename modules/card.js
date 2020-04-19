@@ -231,9 +231,8 @@ class MtgCardLoader {
 
             // instantiate embed object
             const embed = new Discord.MessageEmbed({
-                fields: [
-                    {name: title, value: description}
-                ],
+                title,
+                description,
                 footer: {text: footer},
                 url: card.scryfall_uri,
                 color: this.getBorderColor(card.layout === 'transform' ? card.card_faces[0]:card),

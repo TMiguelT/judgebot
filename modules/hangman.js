@@ -73,10 +73,12 @@ class MtgHangman {
             'reactions to pick letters.';
 
         // instantiate embed object
-        const embed = new Discord.MessageEmbed()
-            .setTitle(title)
-            .addFields({name: 'Guess the card:', value: description})
-            .setFooter('You have ' + this.gameTime / 60000 + ' minutes to guess the card.');
+        const embed = new Discord.MessageEmbed({
+            author: {name: "Guess the card:"},
+            title,
+            description,
+            footer: {text: "You have "+this.gameTime/60000+" minutes to guess the card."}
+        });
 
         // game is over
         if (done || !missing.length || wrong > 6) {
