@@ -34,6 +34,16 @@ class MtgHangman {
         return this.commands;
     }
 
+    /**
+     * Using the stored parameters, updates the embed for the specified game
+     * @param id Game ID
+     * @param forceCorrect If true, force the game to be won
+     */
+    updateEmbed(id, forceCorrect = false){
+        const game = this.runningGames[id];
+        game.message.edit('', {embed: this.generateEmbed(game.card, game.difficulty, game.letters, game.done, forceCorrect, game.wrongGuesses)});
+    }
+
     // generate the embed card
     generateEmbed(card, difficulty, letters = [], done = false, forceCorrect = false, wrongGuesses = 0) {
         // count number of wrong letters and missing letters
@@ -116,15 +126,7 @@ class MtgHangman {
                 if (guess.includes(correct)){
                     console.log('This was correct');
                     // If they're correct, pretend we guessed all the letters individually
-                    const embed = this.generateEmbed(
-                        game.card,
-                        game.difficulty,
-                        game.letters,
-                        true,
-                        true,
-                        game.wrongGuesses
-                    );
-                    game.message.edit('', {embed});
+                    this.updateEmbed(id, true);
                     game.collector.stop('finished');
                     msg.react('✅');
                 }
@@ -132,6 +134,7 @@ class MtgHangman {
                     console.log('This was incorrect');
                     game.wrongGuesses++;
                     msg.react('❎');
+                    this.updateEmbed(id, false);
                 }
             }
             else {
@@ -148,7 +151,7 @@ class MtgHangman {
         console.log(`Game not already started`);
 
         // Add an empty dict to the running games dictionary so we don't make duplicates
-        this.runningGames[id] = {};
+        const game = this.runningGames[id] = {};
 
         const difficulty = first; // can be "easy" or "hard" or blank (=medium)
 
@@ -168,8 +171,7 @@ class MtgHangman {
                         if (letters.indexOf(char) < 0) {
                             letters.push(char);
                         }
-                        const embed = this.generateEmbed(body, difficulty, letters);
-                        sentMessage.edit('', {embed});
+                        this.updateEmbed(id, false);
                         // is the game over? then stop the collector
                         if (embed.image && embed.image.url) {
                             collector.stop('finished');
@@ -177,7 +179,8 @@ class MtgHangman {
                     }).on('end', (collected, reason) => {
                         // game is already over, don't edit message again
                         if (reason !== "finished") {
-                            sentMessage.edit('', {embed: this.generateEmbed(body, difficulty, letters, true)});
+                            game.done = true;
+                            this.updateEmbed(id, false);
                         }
                         // remove guild / author ID from running games
                         delete this.runningGames[id];
@@ -189,7 +192,8 @@ class MtgHangman {
                         card: body,
                         difficulty: difficulty,
                         letters: letters,
-                        wrongGuesses: 0
+                        wrongGuesses: 0,
+                        done: false
                     };
                 }).catch(() => {});
             }
